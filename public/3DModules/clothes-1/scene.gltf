@@ -1,0 +1,398 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 3743,
+      "max": [
+        54.154937744140625,
+        188.5342559814453,
+        22.481037139892578
+      ],
+      "min": [
+        -54.24982452392578,
+        61.468780517578125,
+        -16.672273635864258
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 44916,
+      "componentType": 5126,
+      "count": 3743,
+      "max": [
+        0.9997328519821167,
+        0.9935938715934753,
+        0.999779224395752
+      ],
+      "min": [
+        -0.9992571473121643,
+        -0.9983017444610596,
+        -0.9999094605445862
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 3743,
+      "max": [
+        0.9999964833259583,
+        0.9998413920402527,
+        0.9996066093444824,
+        1.0
+      ],
+      "min": [
+        -0.9959759712219238,
+        -0.9994702339172363,
+        -0.999733030796051,
+        -1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 3743,
+      "max": [
+        0.9788519740104675,
+        0.9810299873352051
+      ],
+      "min": [
+        0.027250999584794044,
+        0.03254200145602226
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 20574,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 89832,
+      "componentType": 5126,
+      "count": 1131,
+      "max": [
+        21.04410171508789,
+        112.53988647460938,
+        15.71031379699707
+      ],
+      "min": [
+        -21.303070068359375,
+        16.671905517578125,
+        -11.644877433776855
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 103404,
+      "componentType": 5126,
+      "count": 1131,
+      "max": [
+        0.9997893571853638,
+        0.7276025414466858,
+        0.9996493458747864
+      ],
+      "min": [
+        -0.9998966455459595,
+        -0.9650626182556152,
+        -0.9983526468276978
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "byteOffset": 59888,
+      "componentType": 5126,
+      "count": 1131,
+      "max": [
+        0.9985772371292114,
+        0.7830324172973633,
+        0.99948650598526,
+        1.0
+      ],
+      "min": [
+        -0.9996464848518372,
+        -0.7001594305038452,
+        -0.9966859221458435,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 29944,
+      "componentType": 5126,
+      "count": 1131,
+      "max": [
+        0.9951429963111877,
+        0.8974260091781616
+      ],
+      "min": [
+        0.009940999560058117,
+        0.011814000084996223
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 82296,
+      "componentType": 5125,
+      "count": 6222,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "deymar (https://sketchfab.com/deymar)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/a-city-set-of-clothes-8c3f5983e1a1430783b855271f4f9b64",
+      "title": "a city set of clothes"
+    },
+    "generator": "Sketchfab-12.77.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 107184,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 38992,
+      "byteOffset": 107184,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 116976,
+      "byteOffset": 146176,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 77984,
+      "byteOffset": 263152,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 341136,
+      "uri": "./scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "./textures/lambert2_baseColor.jpeg"
+    },
+    {
+      "uri": "./textures/lambert2_metallicRoughness.png"
+    },
+    {
+      "uri": "./textures/lambert2_normal.png"
+    },
+    {
+      "uri": "./textures/lambert1_baseColor.jpeg"
+    },
+    {
+      "uri": "./textures/lambert1_metallicRoughness.png"
+    },
+    {
+      "uri": "./textures/lambert1_normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "lambert2",
+      "normalTexture": {
+        "index": 2
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "lambert1",
+      "normalTexture": {
+        "index": 5
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 3
+        },
+        "metallicRoughnessTexture": {
+          "index": 4
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "defaultMaterial",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 6,
+            "POSITION": 5,
+            "TANGENT": 7,
+            "TEXCOORD_0": 8
+          },
+          "indices": 9,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        0.010265886783599854,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.27948477506953e-18,
+        -0.010265886783599854,
+        0.0,
+        0.0,
+        0.010265886783599854,
+        2.27948477506953e-18,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2,
+        4
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -4.371139006309477e-08,
+        0.999999999999999,
+        0.0,
+        0.0,
+        -0.999999999999999,
+        -4.371139006309477e-08,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Collada visual scene group"
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "polySurface84"
+    },
+    {
+      "mesh": 0,
+      "name": "defaultMaterial"
+    },
+    {
+      "children": [
+        5
+      ],
+      "name": "polySurface1"
+    },
+    {
+      "mesh": 1,
+      "name": "defaultMaterial"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    },
+    {
+      "sampler": 0,
+      "source": 3
+    },
+    {
+      "sampler": 0,
+      "source": 4
+    },
+    {
+      "sampler": 0,
+      "source": 5
+    }
+  ]
+}
