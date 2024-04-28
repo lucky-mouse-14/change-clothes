@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import * as THREE from 'three'
-import { useScene, useCamera, useRenderer, useGLTFLoader, useLights } from '@/hooks'
+import { useScene, useCamera, useRenderer, useGLTFLoader, useLights, useControls } from '@/hooks'
 
 // 容器
 const refThreeContainer = ref()
@@ -11,7 +11,8 @@ let threeContainerWidth = 0
 let threeContainerHeight = 0
 let scene = null
 let renderer = null
-let camera = null 
+let camera = null
+let controls = null
 let animationFrameId  = null
 
 /// hooks
@@ -19,6 +20,7 @@ const { initScene, destroyScene, } = useScene()
 const { initCamera, destroyCamera, } = useCamera()
 const { initRenderer, destroyRenderer, } = useRenderer()
 const { initLights, destroyLights } = useLights()
+const { initOrbitControls, destroyControls } = useControls()
 
 onMounted(() => {
   threeContainerWidth = refThreeContainer.value.offsetWidth
@@ -28,8 +30,7 @@ onMounted(() => {
   camera = initCamera(refThreeContainer.value)
   initLights(scene)
   renderer = initRenderer(refThreeContainer.value)
-
-  console.log('vvvv', renderer)
+  controls = initOrbitControls(camera, renderer)
 
   loadModel()
 
@@ -37,6 +38,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  destroyControls(controls)
   destroyRender()
   destroyRenderer(renderer)
   destroyLights()
