@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, } from 'vue'
+import { ref, onMounted, onUnmounted, } from 'vue'
 import * as poseDetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs-core'
 import '@tensorflow/tfjs-backend-webgl'
@@ -35,75 +35,92 @@ let elVideoWidth = 0
 let elVideoHeight = 0
 
 const DEFAULT_SCORE_THRESHOLD = 0.5
-const DEFAULT_LINE_WIDTH = 4
+const DEFAULT_LINE_WIDTH = 2
 const DEFAULT_RADIUS = 5
+
+let animationId = null
+
+let isDetected = false
 
 onMounted(async () => {
   await init()
 })
 
-onBeforeUnmount(() => {
+onUnmounted(() => {
+  isDetected = false
+  if(animationId) {
+    cancelAnimationFrame(animationId)
+  }
   detector?.dispose()
   detector = null
   clearCtx()
 })
 
 async function start() {
-  refVideo.value.play()
-  await detectPose()
+  isDetected = true
 
-  setTimeout(() => {
-    detectPose()
-  }, 50)
-}
-
-async function init () {
-
-  // 获取视频流
+   // 获取视频流
   const stream = await navigator.mediaDevices.getUserMedia({
     audio: false,
     video: true,
   })
   refVideo.value.srcObject = stream
 
-  elVideoWidth = refVideo.value.clientWidth
-  elVideoHeight = refVideo.value.clientHeight
+  refVideo.value.onloadeddata = async function() {
+    elVideoWidth = refVideo.value.clientWidth
+    elVideoHeight = refVideo.value.clientHeight
 
-  refCanvas.value.width = elVideoWidth
-  refCanvas.value.height = elVideoWidth
+    refCanvas.value.width = elVideoWidth
+    refCanvas.value.height = elVideoHeight
 
-  await tf.ready()
-  console.log('tf ready complete.')
-  model = poseDetection.SupportedModels.PoseNet
-  console.log('111111111 - model', model)
-  detector = await poseDetection.createDetector(model, {
-    quantBytes: 4,
-    architecture: 'MobileNetV1',
-    outputStride: 16,
-    inputResolution: {width: 500, height: 500},
-    multiplier: 0.75
-  })
-  console.log('111111111 - detector', detector)
+    await tf.ready()
 
+    model = poseDetection.SupportedModels.PoseNet
+
+    detector = await poseDetection.createDetector(model, {
+      quantBytes: 4,
+      architecture: 'MobileNetV1',
+      outputStride: 16,
+      inputResolution: {width: elVideoWidth, height: elVideoHeight},
+      multiplier: 0.75
+    })
+
+    // 开始检测
+    await detectPose()
+  }
+}
+
+function stop() {
+  isDetected = false
+  if(animationId) {
+    cancelAnimationFrame(animationId)
+  }
+  detector?.dispose()
+  detector = null
+  clearCtx()
+}
+
+async function init () {
   ctx = refCanvas.value.getContext('2d')
 }
 
 async function detectPose() {
-  console.log('refVideo.value', refVideo.value)
+  if (!isDetected) return false
   // 获取检测结果
-  const poses = await detector.estimatePoses(refVideo.value, {
+  const poses = await detector.estimatePoses(refCanvas.value, {
     flipHorizontal: false, // 是否水平翻转
     maxPoses: 1, // 最大检测人数
     // scoreThreshold: DEFAULT_SCORE_THRESHOLD, // 置信度
     // nmsRadius: 20, // 非极大值抑制
   })
-  console.log('aaaaaaa', poses)
-  // 将 pose 上的17个关键点的坐标信息存入 pointList
-  const pointList = poses[0]?.keypoints || []
-  console.log('111111111111 - pointList', pointList)
 
   // 绘制画布
   drawCtx()
+
+  // 将 pose 上的17个关键点的坐标信息存入 pointList
+  const pointList = poses[0]?.keypoints || []
+
+  console.log('pointList', pointList)
 
   // 画出所有关键点
   pointList.forEach(({ x, y, score, name }) => {
@@ -126,6 +143,14 @@ async function detectPose() {
       // 画出所有连线
       drawSegment([kp1.x, kp1.y], [kp2.x, kp2.y], 'aqua', 1, ctx)
     }
+  })
+
+  if(animationId) {
+    cancelAnimationFrame(animationId)
+  }
+  // 一帧执行一次
+  animationId = requestAnimationFrame(async () => {
+    await detectPose()
   })
 }
 
