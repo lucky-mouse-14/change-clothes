@@ -1,85 +1,20 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
-import * as THREE from 'three'
-import { useScene, useCamera, useRenderer, useGLTFLoader, useLights, useControls } from '@/hooks'
-
-// 容器
-const refThreeContainer = ref()
-
-/// 定义变量
-let threeContainerWidth = 0
-let threeContainerHeight = 0
-let scene = null
-let renderer = null
-let camera = null
-let controls = null
-let animationFrameId  = null
-
-/// hooks
-const { initScene, destroyScene, } = useScene()
-const { initCamera, destroyCamera, } = useCamera()
-const { initRenderer, destroyRenderer, } = useRenderer()
-const { initLights, destroyLights } = useLights()
-const { initOrbitControls, destroyControls } = useControls()
-
-onMounted(() => {
-  threeContainerWidth = refThreeContainer.value.offsetWidth
-  threeContainerHeight = refThreeContainer.value.offsetHeight
-
-  scene = initScene(scene)
-  camera = initCamera(refThreeContainer.value)
-  initLights(scene)
-  renderer = initRenderer(refThreeContainer.value)
-  controls = initOrbitControls(camera, renderer)
-
-  loadModel()
-
-  render()
-})
-
-onBeforeUnmount(() => {
-  destroyControls(controls)
-  destroyRender()
-  destroyRenderer(renderer)
-  destroyLights()
-  destroyCamera(camera)
-  destroyScene(scene)
-})
-
-function render() {
-  animationFrameId && window.cancelAnimationFrame(animationFrameId)
-  animationFrameId = null
-  animationFrameId = window.requestAnimationFrame(render)
-
-  renderer && renderer.clear()
-  renderer && renderer.render(scene, camera)
-}
-function destroyRender() {
-  animationFrameId && window.cancelAnimationFrame(animationFrameId)
-  animationFrameId = null
-}
-
-function loadModel() {
-  /// hooks
-  const { loadGLTF } = useGLTFLoader()
-  loadGLTF(scene)
-}
+import ThreeView from '@/views/three-view/three-view.vue'
+import VideoDetection from '@/views/video-detection/video-detection.vue'
 </script>
 
 <template>
   <div class="view-container">
-    <div ref="refThreeContainer" id="three-container"></div>
+    <VideoDetection />
+    <ThreeView />
   </div>
 </template>
 
 <style scoped lang="less">
 .view-container {
-  width: 320px;
-  height: 640px;
-  border: 1px solid #000;
-}
-#three-container {
-  width: 100%;
-  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
