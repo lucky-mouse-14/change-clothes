@@ -2,9 +2,7 @@
   <div class="video-wrapper">
     <canvas ref="refCanvas"></canvas>
 
-    <video ref="refVideo" class="video-container" loop>
-      <source src="/Videos/test.mp4" type="video/mp4">
-    </video>
+    <video ref="refVideo" class="video-container" autoplay playsinline object-fill></video>
 
     <div class="btns">
       <div class="btn" @click="start">开始</div>
@@ -37,7 +35,7 @@ let elVideoHeight = 0
 
 const DEFAULT_SCORE_THRESHOLD = 0.5
 const DEFAULT_LINE_WIDTH = 2
-const DEFAULT_RADIUS = 4
+const DEFAULT_RADIUS = 5
 
 let animationId = null
 let frameCount = 0
@@ -56,35 +54,41 @@ onUnmounted(() => {
 async function start() {
   isDetected = true
 
-  //  play
-  refVideo.value.play()
-
-  elVideoWidth = refVideo.value.clientWidth
-  elVideoHeight = refVideo.value.clientHeight
-
-  refCanvas.value.width = elVideoWidth
-  refCanvas.value.height = elVideoHeight
-
-  await tf.ready()
-
-  model = poseDetection.SupportedModels.PoseNet
-
-  detector = await poseDetection.createDetector(model, {
-    quantBytes: 4,
-    architecture: 'MobileNetV1',
-    outputStride: 16,
-    inputResolution: {width: 257, height: 257},
-    multiplier: 0.75
+   // 获取视频流
+  const stream = await navigator.mediaDevices.getUserMedia({
+    audio: false,
+    video: true,
+  }).catch(err => {
+    console.log('err', err)
   })
+  refVideo.value.srcObject = stream
 
-  // 开始帧动画
-  await startFrame()
+  refVideo.value.onloadeddata = async function() {
+    elVideoWidth = refVideo.value.clientWidth
+    elVideoHeight = refVideo.value.clientHeight
 
+    refCanvas.value.width = elVideoWidth
+    refCanvas.value.height = elVideoHeight
+
+    await tf.ready()
+
+    model = poseDetection.SupportedModels.PoseNet
+
+    detector = await poseDetection.createDetector(model, {
+      quantBytes: 4,
+      architecture: 'MobileNetV1',
+      outputStride: 16,
+      inputResolution: {width: 257, height: 257},
+      multiplier: 0.75
+    })
+
+    // 开始帧动画
+    await startFrame()
+  }
 }
 
 function stop() {
   isDetected = false
-  refVideo.value?.pause()
   if(animationId) {
     cancelAnimationFrame(animationId)
   }
@@ -170,7 +174,6 @@ function drawKeypoints(keypoints) {
     drawKeypoint(keypoints[i]);
   }
 }
-
 function drawKeypoint(keypoint) {
   // If score is null, just show the keypoint.
   const score = keypoint.score != null ? keypoint.score : 1;

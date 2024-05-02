@@ -9,10 +9,12 @@ export function useGLTFLoader() {
         // '3DModules/anatomical_skeleton.glb',
         // '3DModules/emi_-_3d_anime_character_girl_for_blender.glb',
         // '3DModules/t-shirt__3_fourth.glb',
-        '3DModules/skeleton_character_psx.glb',
-        (model) => {
-          console.log('gltf:', model)
-          return resolve(model.scene)
+        // '3DModules/skeleton_character_psx.glb',
+        // '3DModules/low_poly_male_base_-_slender.glb',
+        '3DModules/Xbot.glb',
+        (gltf) => {
+          console.log('gltf:', gltf)
+          return resolve(gltf.scene)
         },
         () => { },
         (err) => {

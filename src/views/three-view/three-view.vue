@@ -2,6 +2,8 @@
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import * as THREE from 'three'
 import { useScene, useCamera, useRenderer, useGLTFLoader, useLights, useControls, useLibs, } from '@/hooks'
+import useBoneObj from './hooks/useBoneObj'
+
 
 // 容器
 const refThreeContainer = ref(null)
@@ -26,7 +28,10 @@ const { initOrbitControls, destroyControls } = useControls()
 const { loadGLTF } = useGLTFLoader()
 const { initStats } = useLibs()
 
-onMounted(() => {
+/// self hooks
+const { boneObj, initBoneObj, } = useBoneObj()
+
+onMounted(async () => {
   threeContainerWidth = refThreeContainer.value.offsetWidth
   threeContainerHeight = refThreeContainer.value.offsetHeight
 
@@ -37,7 +42,9 @@ onMounted(() => {
   controls = initOrbitControls(camera, renderer)
   stats = initStats(refThreeContainer.value)
 
-  loadModel()
+  await loadModel()
+
+  console.log('threejs - scene - data: ', scene)
 
   render()
 })
@@ -71,15 +78,31 @@ async function loadModel() {
   const model = await loadGLTF()
   scene.add(model)
 
+  initBoneObj(model)  
+
   skeleton = new THREE.SkeletonHelper( model );
-  console.log('bbbb', skeleton)
+  console.log('threejs - model - data: ', skeleton)
   skeleton.visible = true;
   scene.add( skeleton );
+}
+
+function testDoMotion1() {
+  const bone = scene.getObjectByName('mixamorigLeftUpLeg')
+  console.log('bone-leftUpLeg', bone)
+  bone.rotation.z += 0.5
+}
+function testDoMotion2() {
+  const bone1 = scene.getObjectByName('mixamorigLeftLeg')
+  const bone2 = scene.getObjectByName('mixamorigLeftUpLeg')
+  bone1.rotation.x += 0.4
+  bone2.rotation.x -= 0.5
 }
 </script>
 
 <template>
-  <div ref="refThreeContainer" class="three-container"></div>
+  <div ref="refThreeContainer" class="three-container" />
+  <button @click="testDoMotion1">做动作1</button>
+  <button @click="testDoMotion2">做动作2</button>
 </template>
 
 <style scoped lang="less">
