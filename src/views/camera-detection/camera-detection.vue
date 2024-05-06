@@ -5,7 +5,7 @@
     <video ref="refVideo" class="video-container" autoplay playsinline object-fill></video>
 
     <div class="btns">
-      <div class="btn" @click="start">开始</div>
+      <div class="btn" @click="start">{{ isReady ? '开始' : '加载中' }}</div>
       <div class="btn" @click="stop">结束</div>
     </div>
   </div>
@@ -33,7 +33,7 @@ let model = null
 let elVideoWidth = 0
 let elVideoHeight = 0
 
-const DEFAULT_SCORE_THRESHOLD = 0.5
+const DEFAULT_SCORE_THRESHOLD = 0.8
 const DEFAULT_LINE_WIDTH = 2
 const DEFAULT_RADIUS = 5
 
@@ -42,6 +42,7 @@ let frameCount = 0
 let framesPerUpdate  = 2
 
 let isDetected = false
+const isReady = ref(false)
 
 onMounted(async () => {
   await init()
@@ -51,7 +52,13 @@ onUnmounted(() => {
   stop()
 })
 
+async function init () {
+  await tf.ready()
+  isReady.value = true
+}
+
 async function start() {
+  if (!isReady.value) return false
   isDetected = true
 
    // 获取视频流
@@ -70,7 +77,8 @@ async function start() {
     refCanvas.value.width = elVideoWidth
     refCanvas.value.height = elVideoHeight
 
-    await tf.ready()
+    // 获取画布
+    ctx = refCanvas.value.getContext('2d')
 
     model = poseDetection.SupportedModels.PoseNet
 
@@ -88,6 +96,8 @@ async function start() {
 }
 
 function stop() {
+  if(!isReady.value) return false
+
   isDetected = false
   if(animationId) {
     cancelAnimationFrame(animationId)
@@ -95,10 +105,6 @@ function stop() {
   detector?.dispose()
   detector = null
   clearCtx()
-}
-
-async function init () {
-  ctx = refCanvas.value.getContext('2d')
 }
 
 async function startFrame() {
