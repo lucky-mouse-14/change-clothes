@@ -1,0 +1,3 @@
+export function usePoseDetector () {
+  return {}
+}
